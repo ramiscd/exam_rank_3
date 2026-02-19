@@ -18,7 +18,8 @@ int main(int ac, char **av)
 
 	// verificar "abc" em "abcdef" -> ***def
 	char *alvo = "abc";
-	memmem()
+	// void *memmem(const void *haystack, size_t haystacklen, const void *needle, size_t needlelen);
+	void *ptr = memmem()
 
 	return(0);
 }
