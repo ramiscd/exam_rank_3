@@ -1,11 +1,14 @@
 // Ler todo o buffer size e salvar em uma variavel.
 // echo "test abc test abc" | ./filter abc > out1.txt
+
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <string.h>
 
 int main(int ac, char **av)
 {
@@ -17,9 +20,16 @@ int main(int ac, char **av)
 
 
 	// verificar "abc" em "abcdef" -> ***def
-	char *alvo = "abc";
+	char *alvo = "de";
 	// void *memmem(const void *haystack, size_t haystacklen, const void *needle, size_t needlelen);
-	void *ptr = memmem()
+	void *ptr = memmem(
+		buffer,
+		strlen(buffer),
+		alvo,
+		strlen(alvo)
+	);
+
+	printf("\n%s\n", (char *)ptr);
 
 	return(0);
 }
