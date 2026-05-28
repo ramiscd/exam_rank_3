@@ -11,7 +11,7 @@ int validate_args(int ac, char **av)
 {
 	if(ac != 2)
 		return 1;
-	if (!*av[1] || av[1][0] == '\0')
+	if (!av[1] || av[1][0] == '\0')
 		return 1;
 	return 0;
 }
