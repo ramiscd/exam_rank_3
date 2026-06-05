@@ -25,6 +25,19 @@ void print_subset(int *subset, int size) {
  * BLOCO 2: O CORAÇÃO DO ALGORITMO (BACKTRACKING)
  * Objetivo: Tomar uma decisão binária (sim/não) para cada número do conjunto.
  * ========================================================================== */
+
+/*
+int *set, int set_size -> Mesa de trabalho, o array com os numeros que o usuario digitou
+
+int index -> o ponteiro que aponta para o numero da mesa que estamos olhando
+
+int *subset, int subset_size -> Nossa sacola, e quantos elementos colocamos nela até agora
+
+int current_sum -> Nossa folha de papel com a soma acumulada dos numeros que colocamso na sacola
+
+int target -> Alvo que temos que encontrar
+*/
+
 void backtrack(int *set, int set_size, int index, int *subset, int subset_size, int current_sum, int target) {
     
     // CASO BASE: Se o índice alcançou o tamanho do conjunto, processamos todos os números

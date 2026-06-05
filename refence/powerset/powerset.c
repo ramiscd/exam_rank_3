@@ -26,31 +26,36 @@ void backtrack(int *set, int set_size, int index, int *subset, int subset_size, 
 	backtrack(set, set_size, index + 1, subset, subset_size + 1, current_sum + set[index], target);
 }
 
-int main(int argc, char **argv) {
-	if (argc < 2) {
-		return 1; 
-	}
-	if (argv[1][0] == '0' && argv[1][1] == '\0') {
+int main(int ac, char **av)
+{
+	if (ac < 2)
+		return 1;
+
+	if(av[1][0] == '0' && av[1][1] == '\0')
+	{
 		printf("\n");
 		return 0;
 	}
-	int target = atoi(argv[1]);
-	int set_size = argc - 2;
 
-	if (set_size <= 0) {
+	int target = atoi(av[1]);
+	int set_size = ac - 2;
+
+	if (set_size <= 0)
 		return 1;
-	}
 
 	int *set = malloc(sizeof(int) * set_size);
 	int *subset = malloc(sizeof(int) * set_size);
-	if (!set || !subset) {
+
+	if(!set || !subset)
+	{
 		free(set);
 		free(subset);
 		return 1;
 	}
 
-	for (int i = 0; i < set_size; i++) {
-		set[i] = atoi(argv[i + 2]);
+	for (int i = 0; i < set_size; i++)
+	{
+		set[i] = atoi(av[i + 2]);
 	}
 
 	backtrack(set, set_size, 0, subset, 0, 0, target);
