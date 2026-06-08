@@ -1,86 +1,16 @@
 #include <unistd.h>
 
-void	sort(char *str, int len);
-void	rotate(char *str, int start, int end, int reverse);
-void	solve(char *str, int start, int end);
-
-int	main(int argc, char **argv)
+// 1. Ordenação normal (Selection Sort)
+void	sort_str(char *str, int len)
 {
-	char	*arg;
-	int		len;
-
-	if (argc != 2)
-		return (1);
-	arg = argv[1];
-	len = 0;
-	while (arg[len])
-		len++;
-	sort(arg, len);
-	solve(arg, 0, len -1);
-	return (0);
-}
-
-void	solve(char *str, int start, int end)
-{
-	int	i;
-
-	if (start == end)
-	{
-		i = 0;
-		while (str[i])
-			write(1, &str[i++], 1);
-		write(1, "\n", 1);
-		return ;
-	}
-	i = start;
-	while (i <= end)
-	{
-		rotate(str, start, i, 0);
-		solve(str, start +1, end);
-		rotate(str, start, i, 1);
-		i++;
-	}
-}
-
-void	rotate(char *str, int start, int end, int reverse)
-{
-	char	tmp;
-	int		i;
-
-	if (!reverse)
-	{
-		tmp = str[end];
-		i = end;
-		while (i > start)
-		{
-			str[i] = str[i -1];
-			i--;
-		}
-		str[start] = tmp;
-	}
-	else
-	{
-		tmp = str[start];
-		i = start;
-		while (i < end)
-		{
-			str[i] = str[i +1];
-			i++;
-		}
-		str[end] = tmp;
-	}
-}
-
-void	sort(char *str, int len)
-{
-	char	tmp;
 	int		i;
 	int		j;
+	char	tmp;
 
 	i = 0;
-	while (i < len -1)
+	while (i < len - 1)
 	{
-		j = i +1;
+		j = i + 1;
 		while (j < len)
 		{
 			if (str[i] > str[j])
@@ -93,4 +23,64 @@ void	sort(char *str, int len)
 		}
 		i++;
 	}
+}
+
+// 2. A recursão simples e sem matemática de rotação
+void	solve(char *str, char *res, int *used, int pos, int len)
+{
+	int	i;
+
+	// Se a posição atual chegou no tamanho da string, a palavra tá pronta
+	if (pos == len)
+	{
+		write(1, res, len);
+		write(1, "\n", 1);
+		return ;
+	}
+	
+	i = 0;
+	while (i < len)
+	{
+		// Se a letra ainda NÃO foi usada na palavra atual
+		if (used[i] == 0)
+		{
+			used[i] = 1;           // MARCA: "estou usando esta letra"
+			res[pos] = str[i];     // Coloca a letra na posição atual do resultado
+			
+			// Chama a função para preencher a PRÓXIMA posição (pos + 1)
+			solve(str, res, used, pos + 1, len);
+			
+			used[i] = 0;           // DESMARCA (Backtrack): "libera a letra para a próxima tentativa"
+		}
+		i++;
+	}
+}
+
+int	main(int argc, char **argv)
+{
+	char	res[255];   // Buffer para montar a palavra final
+	int		used[255];  // Array para marcar se a letra [i] já foi usada (0 ou 1)
+	int		len;
+	int		i;
+
+	if (argc != 2)
+		return (1);
+		
+	len = 0;
+	while (argv[1][len])
+		len++;
+		
+	sort_str(argv[1], len);
+	
+	// Zera o array de "usados"
+	i = 0;
+	while (i < len)
+	{
+		used[i] = 0;
+		i++;
+	}
+	
+	// Chama a função começando na posição 0
+	solve(argv[1], res, used, 0, len);
+	return (0);
 }
