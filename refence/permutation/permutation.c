@@ -28,7 +28,7 @@ void	sort_str(char *str, int len)
 // 2. A recursão simples e sem matemática de rotação
 void	solve(char *str, char *res, int *used, int pos, int len)
 {
-	int	i;
+	int	i = 0;
 
 	// Se a posição atual chegou no tamanho da string, a palavra tá pronta
 	if (pos == len)
@@ -37,8 +37,7 @@ void	solve(char *str, char *res, int *used, int pos, int len)
 		write(1, "\n", 1);
 		return ;
 	}
-	
-	i = 0;
+
 	while (i < len)
 	{
 		// Se a letra ainda NÃO foi usada na palavra atual
@@ -56,31 +55,29 @@ void	solve(char *str, char *res, int *used, int pos, int len)
 	}
 }
 
-int	main(int argc, char **argv)
+int	main(int ac, char **av)
 {
 	char	res[255];   // Buffer para montar a palavra final
 	int		used[255];  // Array para marcar se a letra [i] já foi usada (0 ou 1)
-	int		len;
-	int		i;
+	int		len = 0;
+	int		i = 0;
 
-	if (argc != 2)
+	if (ac != 2)
 		return (1);
-		
-	len = 0;
-	while (argv[1][len])
+
+	while (av[1][len])
 		len++;
 		
-	sort_str(argv[1], len);
+	sort_str(av[1], len);
 	
 	// Zera o array de "usados"
-	i = 0;
 	while (i < len)
 	{
 		used[i] = 0;
 		i++;
 	}
-	
+
 	// Chama a função começando na posição 0
-	solve(argv[1], res, used, 0, len);
+	solve(av[1], res, used, 0, len);
 	return (0);
 }

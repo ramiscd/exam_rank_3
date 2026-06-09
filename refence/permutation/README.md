@@ -199,3 +199,60 @@ Quando você abrir o terminal branco da prova, siga este checklist mental:
 * **Marca:** `used[i] = 1; res[pos] = str[i];`
 * **Mergulha:** `solve(..., pos + 1, ...);`
 * **Desmarca:** `used[i] = 0;`
+
+---
+
+### 6. Visualização do fluxo
+
+Para você "ver" o código funcionando, precisamos congelar o tempo em cada linha.
+
+Vou te mostrar os primeiros passos (a primeira "descida" até imprimir a primeira palavra).
+
+### A Primeira Descida (Rumo ao "abc")
+
+Imagine que chamamos `solve("abc", res, used, 0, 3)`.
+Neste momento: `str = "abc"`, `res = [ , , ]`, `used = [0, 0, 0]`.
+
+**1ª Camada da Pilha: `solve(..., pos = 0)**`
+
+* `pos (0) == len (3)`? Falso.
+* `i = 0`. Entra no `while (0 < 3)`.
+* `used[0]` é 0? **Sim**.
+* `used[0] = 1`. (Marcamos o 'a' como usado).
+* `res[0] = str[0]` (que é 'a'). O tabuleiro agora é `[a, , ]`.
+* **MÁGICA:** Ele chama `solve(..., pos = 1)`. O programa **pausa** a execução desta função na linha 19. O loop do `i = 0` fica congelado aqui, esperando.
+
+**2ª Camada da Pilha: `solve(..., pos = 1)**`
+
+* Uma nova cópia da função começa.
+* `pos (1) == len (3)`? Falso.
+* `i = 0`. Entra no `while (0 < 3)`.
+* `used[0]` é 0? **Falso!** É 1 (usamos na camada anterior). Ele pula o `if`.
+* `i++`. Agora `i = 1`.
+* `used[1]` é 0? **Sim**.
+* `used[1] = 1`. (Marcamos o 'b' como usado).
+* `res[1] = str[1]` (que é 'b'). O tabuleiro agora é `[a, b, ]`.
+* **MÁGICA:** Ele chama `solve(..., pos = 2)`. Esta função também pausa.
+
+**3ª Camada da Pilha: `solve(..., pos = 2)**`
+
+* Nova cópia da função.
+* `i = 0` (pula, usado), `i = 1` (pula, usado). Chega em `i = 2`.
+* `used[2]` é 0? **Sim**.
+* `used[2] = 1`.
+* `res[2] = str[2]` ('c'). O tabuleiro agora é `[a, b, c]`.
+* Ele chama `solve(..., pos = 3)`. Pausa.
+
+**4ª Camada da Pilha: `solve(..., pos = 3)**`
+
+* `pos (3) == len (3)`? **VERDADEIRO!**
+* Entra no `if`. Imprime `"abc\n"`.
+* Bate no `return;`. Esta camada é destruída. A execução volta para quem a chamou.
+
+**O Retorno (Backtracking na prática):**
+
+* Voltamos para a **3ª Camada** (onde `pos = 2` e `i = 2`), exatamente na linha abaixo da chamada recursiva.
+* O código executa: `used[i] = 0` (ou seja, `used[2] = 0`). Ele devolve o 'c' pra mesa.
+* `i++`. Agora `i = 3`.
+* O `while (3 < 3)` é falso. A função acaba e retorna.
+* Voltamos para a **2ª Camada**... e o processo continua!
